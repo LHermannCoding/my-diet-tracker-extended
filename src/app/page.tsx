@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { today, formatDisplayDate } from "@/lib/dates";
 import { useTracker } from "@/context/TrackerContext";
 import QuickAddForm from "@/components/dashboard/QuickAddForm";
@@ -11,6 +12,10 @@ export default function DashboardPage() {
   const tracker = useTracker();
   const day = tracker.getDay(todayKey);
 
+  useEffect(() => {
+    tracker.loadDayFromDb(todayKey);
+  }, [todayKey, tracker.loadDayFromDb]);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -18,12 +23,20 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-bold text-white">Dashboard</h1>
           <p className="text-sm text-gray-500">{formatDisplayDate(todayKey)}</p>
         </div>
-        <Link
-          href={`/day/${todayKey}`}
-          className="rounded-lg bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-400 transition-colors hover:bg-cyan-500/20"
-        >
-          Full Day View
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            href="/search"
+            className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-cyan-400"
+          >
+            Search Foods
+          </Link>
+          <Link
+            href={`/day/${todayKey}`}
+            className="rounded-lg bg-cyan-500/10 px-4 py-2 text-sm font-medium text-cyan-400 transition-colors hover:bg-cyan-500/20"
+          >
+            Full Day View
+          </Link>
+        </div>
       </div>
 
       <WeekStrip />

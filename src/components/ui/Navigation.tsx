@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 
 const links = [
   { href: "/", label: "Dashboard" },
+  { href: "/search", label: "Search" },
+  { href: "/saved", label: "Saved" },
   { href: "/history", label: "History" },
   { href: "/stats", label: "Stats" },
   { href: "/settings", label: "Settings" },
@@ -19,7 +22,7 @@ export default function Navigation() {
         <Link href="/" className="text-lg font-bold text-cyan-400">
           MyDietTracker
         </Link>
-        <div className="flex gap-1">
+        <div className="flex items-center gap-1">
           {links.map((link) => {
             const active =
               link.href === "/"
@@ -39,6 +42,9 @@ export default function Navigation() {
               </Link>
             );
           })}
+          <div className="ml-3 border-l border-gray-700 pl-3">
+            <UserButton />
+          </div>
         </div>
       </div>
     </nav>
