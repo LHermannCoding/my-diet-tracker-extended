@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
+import { Show, UserButton, SignInButton, SignUpButton } from "@clerk/nextjs";
 
 const links = [
   { href: "/", label: "Dashboard" },
@@ -23,28 +23,42 @@ export default function Navigation() {
           MyDietTracker
         </Link>
         <div className="flex items-center gap-1">
-          {links.map((link) => {
-            const active =
-              link.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(link.href);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-cyan-400/10 text-cyan-400"
-                    : "text-gray-400 hover:text-gray-200"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-          <div className="ml-3 border-l border-gray-700 pl-3">
-            <UserButton />
-          </div>
+          <Show when="signed-in">
+            {links.map((link) => {
+              const active =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                    active
+                      ? "bg-cyan-400/10 text-cyan-400"
+                      : "text-gray-400 hover:text-gray-200"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <div className="ml-3 border-l border-gray-700 pl-3">
+              <UserButton />
+            </div>
+          </Show>
+          <Show when="signed-out">
+            <SignInButton>
+              <button className="rounded-md px-3 py-1.5 text-sm font-medium text-gray-400 transition-colors hover:text-gray-200">
+                Sign In
+              </button>
+            </SignInButton>
+            <SignUpButton>
+              <button className="rounded-md bg-cyan-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-cyan-400">
+                Sign Up
+              </button>
+            </SignUpButton>
+          </Show>
         </div>
       </div>
     </nav>
